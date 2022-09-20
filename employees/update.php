@@ -16,12 +16,9 @@ if (isset($_GET['edit'])) {
         $city = $_POST['city'];
         $department = $_POST['department'];
 
-        if(empty($_FILES['image']['name']))
-        {
+        if (empty($_FILES['image']['name'])) {
             $location = $row['image'];
-        }
-        else
-        {
+        } else {
             $image_name = time() . $_FILES['image']['name'];
             $tmp_name = $_FILES['image']['tmp_name'];
             $location = "./upload/" . $image_name;
@@ -30,12 +27,13 @@ if (isset($_GET['edit'])) {
 
         $update = "UPDATE employees SET ID = $id, `name` = '$name', email = '$email', salary = $salary, city='$city', departmentID = $department, image = '$location' WHERE ID = $id";
         $u = mysqli_query($connection, $update);
+        header("location:list.php?#return");
         testMessage($u, "Update employee");
     }
 }
 $select = "SELECT * FROM departments";
 $departments = mysqli_query($connection, $select);
-auth(1,2);
+auth(1, 2);
 ?>
 <h1 class="text-center"> Upadate Employee </h1>
 <div class="container col-6">
@@ -60,7 +58,7 @@ auth(1,2);
                 </div>
                 <div class="form-group">
                     <label for="image">Image</label>
-                    <input type="file" class="form-control" name="image" >
+                    <input type="file" class="form-control" name="image">
                 </div>
                 <div class="form-row align-items-center">
                     <div class="col-auto my-1">
@@ -68,17 +66,16 @@ auth(1,2);
                         <select class="custom-select mr-sm-2" name="department" required>
                             <option selected>Choose employee's department</option>
                             <?php foreach ($departments as $departmentData) : ?>
-                                <option value="<?= $departmentData['ID']; ?>">
-                                    <?= $departmentData['departmentName']; ?>
-                                </option>
+                            <option value="<?= $departmentData['ID']; ?>">
+                                <?= $departmentData['departmentName']; ?>
+                            </option>
                             <?php endforeach; ?>
                         </select>
                     </div>
                 </div>
-                    <button type="submit" class="btn btn-info mt-2" name="update">Update Data</button>
+                <button type="submit" class="btn btn-info mt-2" name="update">Update Data</button>
             </form>
         </div>
     </div>
 </div>
 <?php include '../shared/footer.php'; ?>
-

@@ -15,11 +15,12 @@ if (isset($_POST['insert'])) {
     $department = $_POST['department'];
     $insert = "INSERT INTO employees(`name`, email, salary, city, departmentID, image) VALUES('$name', '$email', $salary, '$city', $department, '$location')";
     $s = mysqli_query($connection, $insert);
-    testMessage($s, "Insert employee" );
+    testMessage($s, "Insert employee");
+    header("location:list.php#?return");
 }
 $select = "SELECT * FROM departments";
 $departments = mysqli_query($connection, $select);
-auth(1,2);
+auth(1, 2);
 
 ?>
 <h1 class="text-center"> Add Employee </h1>
@@ -53,17 +54,16 @@ auth(1,2);
                         <select class="custom-select mr-sm-2" name="department">
                             <option selected>Choose employee's department</option>
                             <?php foreach ($departments as $departmentData) : ?>
-                                <option value="<?= $departmentData['ID']; ?>">
-                                    <?= $departmentData['departmentName']; ?>
-                                </option>
+                            <option value="<?= $departmentData['ID']; ?>">
+                                <?= $departmentData['departmentName']; ?>
+                            </option>
                             <?php endforeach; ?>
                         </select>
                     </div>
                 </div>
-                    <button type="submit" name="insert" class="btn btn-primary mt-2">Insert Employee</button>
+                <button type="submit" name="insert" class="btn btn-primary mt-2">Insert Employee</button>
             </form>
         </div>
     </div>
 </div>
 <?php include '../shared/footer.php'; ?>
-

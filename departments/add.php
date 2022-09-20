@@ -3,12 +3,12 @@ include '../shared/header.php';
 include '../shared/nav.php';
 include '../general/env.php';
 include '../general/functions.php';
-if(isset($_POST['insdep']))
-{
+if (isset($_POST['insdep'])) {
     $name = $_POST['depName'];
     $insert = "INSERT INTO departments VALUES(NULL, '$name')";
     $i = mysqli_query($connection, $insert);
     testMessage($connection, "Create Department");
+    header("location:list.php#?return");
 }
 auth(1);
 ?>
@@ -21,7 +21,7 @@ auth(1);
                     <label for="name">Department Name</label>
                     <input type="text" class="form-control" name="depName" required>
                 </div>
-                    <button type="submit" name="insdep" class="btn btn-primary mt-2">Create Department</button>
+                <button type="submit" name="insdep" class="btn btn-primary mt-2">Create Department</button>
             </form>
         </div>
     </div>

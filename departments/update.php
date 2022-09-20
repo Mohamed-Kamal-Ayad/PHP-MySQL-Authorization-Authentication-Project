@@ -15,6 +15,7 @@ if (isset($_GET['edit'])) {
         $update = "UPDATE departments SET ID = $id, `departmentName` = '$name' WHERE ID = $id";
         $u = mysqli_query($connection, $update);
         testMessage($u, "Update Department");
+        header("location:list.php#?return");
     }
 }
 auth(1);
@@ -26,7 +27,8 @@ auth(1);
             <form method="POST" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="name">Department Name</label>
-                    <input type="text" class="form-control" value="<?= $row['departmentName'];?>" name="depName" required>
+                    <input type="text" class="form-control" value="<?= $row['departmentName']; ?>" name="depName"
+                        required>
                 </div>
                 <button type="submit" name="update" class="btn btn-info mt-2">Update Department</button>
             </form>

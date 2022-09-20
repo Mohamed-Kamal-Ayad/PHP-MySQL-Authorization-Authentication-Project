@@ -12,7 +12,7 @@ if (isset($_GET['delete'])) {
     unlink($image);
     $delete = "DELETE FROM employees WHERE ID = $id";
     $d = mysqli_query($connection, $delete);
-    header("location:/authproject/employees/list.php");
+    header("location:list.php#?return");
     testMessage($d, "Delete employee");
 }
 
@@ -42,11 +42,11 @@ auth(1, 2, 3);
                 <input class="form-control mr-sm-2" name="searchName" type="search" placeholder="Search"
                     aria-label="Search">
                 <input type="submit" class="btn btn-outline-primary my-2 my-sm-0" name="search">
-                <input type="radio" class="custom-radio ml-auto" name="salary">
+                <input type="checkbox" class="ml-auto mr-1" name="salary">
                 <label for="salary" class="text-right">By salary</label>
             </form>
             <?php if (!isset($_GET['search'])) : ?>
-            <table class="table table-dark">
+            <table id="return" class="table table-dark">
                 <thead>
                     <tr>
                         <th> ID </th>
@@ -85,7 +85,7 @@ auth(1, 2, 3);
                 </tbody>
             </table>
             <?php else : ?>
-            <table class="table table-dark">
+            <table id="return" class="table table-dark">
                 <thead>
                     <tr>
                         <th> ID </th>
