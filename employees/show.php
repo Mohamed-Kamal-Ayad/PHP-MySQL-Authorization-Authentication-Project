@@ -3,14 +3,13 @@ include '../shared/header.php';
 include '../shared/nav.php';
 include '../general/env.php';
 include '../general/functions.php';
-if(isset($_GET['show']))
-    {
-        $id = $_GET['show'];
-        $select = "SELECT * FROM employeesjoindepartment WHERE empID = $id";
-        $emp = mysqli_query($connection, $select);
-        $row =  mysqli_fetch_assoc($emp);
-    }
-auth(1,2);
+if (isset($_GET['show'])) {
+    $id = $_GET['show'];
+    $select = "SELECT * FROM employeesjoindepartment WHERE empID = $id";
+    $emp = mysqli_query($connection, $select);
+    $row =  mysqli_fetch_assoc($emp);
+}
+auth(1, 2);
 ?>
 <h2 class="text-center"> Show Employee : <?= $row['empName'] ?> </h2>
 
@@ -27,4 +26,3 @@ auth(1,2);
     </div>
 </div>
 <?php include '../shared/footer.php'; ?>
-

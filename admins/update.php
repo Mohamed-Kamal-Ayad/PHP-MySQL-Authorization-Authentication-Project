@@ -2,6 +2,18 @@
 include '../general/env.php';
 include '../general/functions.php';
 include '../shared/header.php';
+echo "<style>
+  
+.checkboxes label {
+    display: inline-block;
+    padding-right: 10px;
+    white-space: nowrap;
+  }
+  .checkboxes input {
+    vertical-align: middle;
+  }
+  
+</style>";
 include '../shared/nav.php';
 
 $select = "SELECT * FROM roles";
@@ -27,11 +39,21 @@ if (isset($_GET['edit'])) {
                 $location = "./upload/" . $image_name;
                 move_uploaded_file($tmp_name, $location);
             }
-
-            $update = "UPDATE admins SET ID = $id, `userName` = '$name', password = '$password' , image = '$location' WHERE ID = $id";
-            $u = mysqli_query($connection, $update);
-            testMessage($u, "Update Admin");
-            header("location:list.php#?return");
+            if (!$_SESSION['adminRole'] == 1) {
+                $update = "UPDATE admins SET ID = $id, `userName` = '$name', `password` = '$password' , image = '$location' WHERE ID = $id";
+                $u = mysqli_query($connection, $update);
+                testMessage($u, "Update Admin");
+                header("location:list.php#?return");
+            } else {
+                $update = "UPDATE admins SET ID = $id, `userName` = '$name', `password` = '$password' , image = '$location', `role` = $role WHERE ID = $id";
+                $u = mysqli_query($connection, $update);
+                if ($_SESSION['adminID'] == $id) {
+                    session_unset();
+                    session_destroy();
+                }
+                testMessage($u, "Update Admin");
+                header("location:list.php#?return");
+            }
         } else {
             echo "<div class='alert alert-danger col-4 mx-auto'>
             Wrong Old password!
@@ -60,7 +82,7 @@ auth(1, $_SESSION['adminID']);
                 </div>
                 <div class="form-group">
                     <label for="image">Image</label>
-                    <input type="file" class="form-control" name="image">
+                    <input type="file" class="form-control-file" name="image">
                 </div>
                 <div class="form-row align-items-center">
                     <div class="col-auto my-1">
@@ -75,8 +97,17 @@ auth(1, $_SESSION['adminID']);
                         </select>
                     </div>
                 </div>
-                <button type="submit" name="update" class="btn btn-primary mt-2">Update Data</button>
+                <?php if ($_SESSION['adminID'] == $id) : ?>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" required>
+                    <label class="form-check-label" for="defaultCheck1">
+                        Please notice that you will need to login again!
+                    </label>
+                </div>
+                <?php endif; ?>
+                <button type="submit" name="update" class="btn btn-primary mt-0">Update Data</button>
             </form>
+
         </div>
     </div>
 </div>

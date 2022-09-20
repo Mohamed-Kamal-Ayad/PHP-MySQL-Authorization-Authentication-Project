@@ -41,7 +41,8 @@ auth(1, 2, 3);
             <form method="GET" class="form-inline  my-2 my-lg-0">
                 <input class="form-control mr-sm-2" name="searchName" type="search" placeholder="Search"
                     aria-label="Search">
-                <input type="submit" class="btn btn-outline-primary my-2 my-sm-0" name="search">
+                <input type="submit" class="btn btn-outline-primary mr-2 my-sm-0" value="Search" name="search">
+                <input type="reset" class="btn btn-outline-danger mh-auto my-2 my-sm-1" value="Reset" name="reset">
                 <input type="checkbox" class="ml-auto mr-1" name="salary">
                 <label for="salary" class="text-right">By salary</label>
             </form>
@@ -61,7 +62,7 @@ auth(1, 2, 3);
                         <td><?= $data['ID']; ?></td>
                         <td><?= $data['name']; ?></td>
                         <td>
-                            <?php if ($_SESSION['adminID'] == 1 || $_SESSION['adminID'] == 2) : ?>
+                            <?php if ($_SESSION['adminRole'] == 1 || $_SESSION['adminRole'] == 2) : ?>
                             <div class="dropdown">
                                 <i type="button" data-toggle="dropdown" aria-expanded="false"
                                     class="fa-solid btn btn-light fa-ellipsis-vertical"></i>

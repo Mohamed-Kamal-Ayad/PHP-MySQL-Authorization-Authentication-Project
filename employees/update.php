@@ -58,7 +58,7 @@ auth(1, 2);
                 </div>
                 <div class="form-group">
                     <label for="image">Image</label>
-                    <input type="file" class="form-control" name="image">
+                    <input type="file" class="form-control-file" name="image">
                 </div>
                 <div class="form-row align-items-center">
                     <div class="col-auto my-1">
