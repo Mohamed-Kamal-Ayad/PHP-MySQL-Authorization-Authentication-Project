@@ -16,25 +16,21 @@ if (isset($_GET['delete'])) {
     testMessage($d, "Delete employee");
 }
 
-if(isset($_GET['search']))
-{
+if (isset($_GET['search'])) {
     $searchName = $_GET['searchName'];
-    if(isset($_GET['salary']))
-        {
-            $select = "SELECT * FROM `employees` WHERE `name` LIKE '%$searchName%' ORDER BY salary DESC";
-            $filter = mysqli_query($connection, $select);
-        }
-    else
-        {
-            $select = "SELECT * FROM `employees` WHERE `name` LIKE '%$searchName%'";
-            $filter = mysqli_query($connection, $select);
-        }
+    if (isset($_GET['salary'])) {
+        $select = "SELECT * FROM `employees` WHERE `name` LIKE '%$searchName%' ORDER BY salary DESC";
+        $filter = mysqli_query($connection, $select);
+    } else {
+        $select = "SELECT * FROM `employees` WHERE `name` LIKE '%$searchName%'";
+        $filter = mysqli_query($connection, $select);
+    }
 }
 
 
 $selectEmps = "SELECT * FROM `employees`";
 $employees = mysqli_query($connection, $selectEmps);
-auth(1,2,3);
+auth(1, 2, 3);
 ?>
 <h1 class="text-center">Employees's List</h1>
 
@@ -43,73 +39,93 @@ auth(1,2,3);
         <div class="card-body">
 
             <form method="GET" class="form-inline  my-2 my-lg-0">
-                <input class="form-control mr-sm-2" name = "searchName" type="search" placeholder="Search" aria-label="Search">
+                <input class="form-control mr-sm-2" name="searchName" type="search" placeholder="Search"
+                    aria-label="Search">
                 <input type="submit" class="btn btn-outline-primary my-2 my-sm-0" name="search">
                 <input type="radio" class="custom-radio ml-auto" name="salary">
                 <label for="salary" class="text-right">By salary</label>
             </form>
             <?php if (!isset($_GET['search'])) : ?>
             <table class="table table-dark">
-            <thead>
-            <tr>
-                <th> ID </th>
-                <th> Employee Name</th>
-                <th> Action</th>
-            </tr>
-
-            </thead>
-            <tbody>
-                <?php foreach ($employees as $data) : ?>
-                <tr>
-                    <td><?= $data['ID']; ?></td>
-                    <td><?= $data['name']; ?></td>
-                    <td>
-                        <div class="dropdown">
-                            <i type="button" data-toggle="dropdown" aria-expanded="false" class="fa-solid btn btn-light fa-ellipsis-vertical"></i>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item text-info" href="/authproject/employees/show.php?show=<?= $data['ID'] ?>"><i class="fa-solid fa-eye"></i></a>
-                                <a class="dropdown-item text-primary" href="/authproject/employees/update.php?edit=<?= $data['ID'] ?>"><i class="fa-solid fa-pen-to-square"></i></a>
-                                <a class="dropdown-item text-danger" href="/authproject/employees/list.php?delete=<?= $data['ID'] ?>"><i class="fa-solid fa-trash-can"></i></a>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
-            </table>
-            <?php else : ?>
-                <table class="table table-dark">
-                    <thead>
+                <thead>
                     <tr>
                         <th> ID </th>
                         <th> Employee Name</th>
                         <th> Action</th>
                     </tr>
 
-                    </thead>
-                    <tbody>
-                    <?php foreach ($filter as $data) : ?>
-                        <tr>
-                            <td><?= $data['ID']; ?></td>
-                            <td><?= $data['name']; ?></td>
-                            <td>
-                                <div class="dropdown">
-                                    <i type="button" data-toggle="dropdown" aria-expanded="false" class="fa-solid btn btn-light fa-ellipsis-vertical"></i>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item text-info" href="/authproject/employees/show.php?show=<?= $data['ID'] ?>"><i class="fa-solid fa-eye"></i></a>
-                                        <a class="dropdown-item text-primary" href="/authproject/employees/update.php?edit=<?= $data['ID'] ?>"><i class="fa-solid fa-pen-to-square"></i></a>
-                                        <a class="dropdown-item text-danger" href="/authproject/employees/list.php?delete=<?= $data['ID'] ?>"><i class="fa-solid fa-trash-can"></i></a>
-                                    </div>
+                </thead>
+                <tbody>
+                    <?php foreach ($employees as $data) : ?>
+                    <tr>
+                        <td><?= $data['ID']; ?></td>
+                        <td><?= $data['name']; ?></td>
+                        <td>
+                            <?php if ($_SESSION['adminID'] == 1 || $_SESSION['adminID'] == 2) : ?>
+                            <div class="dropdown">
+                                <i type="button" data-toggle="dropdown" aria-expanded="false"
+                                    class="fa-solid btn btn-light fa-ellipsis-vertical"></i>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item text-info"
+                                        href="/authproject/employees/show.php?show=<?= $data['ID'] ?>"><i
+                                            class="fa-solid fa-eye"></i></a>
+                                    <a class="dropdown-item text-primary"
+                                        href="/authproject/employees/update.php?edit=<?= $data['ID'] ?>"><i
+                                            class="fa-solid fa-pen-to-square"></i></a>
+                                    <a class="dropdown-item text-danger"
+                                        href="/authproject/employees/list.php?delete=<?= $data['ID'] ?>"><i
+                                            class="fa-solid fa-trash-can"></i></a>
                                 </div>
-                            </td>
-                        </tr>
+                            </div>
+                            <?php else : echo '<p style="color:red">No Access</p>' ?>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
                     <?php endforeach; ?>
-                    </tbody>
-                </table>
+                </tbody>
+            </table>
+            <?php else : ?>
+            <table class="table table-dark">
+                <thead>
+                    <tr>
+                        <th> ID </th>
+                        <th> Employee Name</th>
+                        <th> Action</th>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    <?php foreach ($filter as $data) : ?>
+                    <tr>
+                        <td><?= $data['ID']; ?></td>
+                        <td><?= $data['name']; ?></td>
+                        <td>
+                            <?php if ($_SESSION['adminID'] == 1 || $_SESSION['adminID'] == 2) : ?>
+                            <div class="dropdown">
+                                <i type="button" data-toggle="dropdown" aria-expanded="false"
+                                    class="fa-solid btn btn-light fa-ellipsis-vertical"></i>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item text-info"
+                                        href="/authproject/employees/show.php?show=<?= $data['ID'] ?>"><i
+                                            class="fa-solid fa-eye"></i></a>
+                                    <a class="dropdown-item text-primary"
+                                        href="/authproject/employees/update.php?edit=<?= $data['ID'] ?>"><i
+                                            class="fa-solid fa-pen-to-square"></i></a>
+                                    <a class="dropdown-item text-danger"
+                                        href="/authproject/employees/list.php?delete=<?= $data['ID'] ?>"><i
+                                            class="fa-solid fa-trash-can"></i></a>
+                                </div>
+                            </div>
+                            <?php else : echo '<p style="color:red">No Access</p>' ?>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
             <?php endif; ?>
         </div>
     </div>
 </div>
 
 <?php include '../shared/footer.php'; ?>
-
